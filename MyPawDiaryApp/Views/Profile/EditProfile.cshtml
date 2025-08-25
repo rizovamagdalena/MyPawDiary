@@ -1,0 +1,32 @@
+﻿@model MyPawDiaryApp.Models.ApplicationUser
+
+@{
+    ViewBag.Title = "Edit Profile";
+}
+
+<div class="container mt-4">
+    <h2>Edit Your Profile</h2>
+
+    @using (Html.BeginForm("EditProfile", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <div class="mb-3">
+            <label for="FirstName" class="form-label">First Name</label>
+            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+        </div>
+
+        <div class="mb-3">
+            <label for="Email" class="form-label">Email</label>
+            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", type = "email" })
+        </div>
+
+        <div class="mb-3">
+            <label for="ProfilePhoto" class="form-label">Profile Photo (optional)</label>
+            <input type="file" name="ProfilePhoto" class="form-control" />
+        </div>
+
+        <button type="submit" class="btn btn-success">Save Changes</button>
+        <a href="@Url.Action("Profile", "Profile", new { id = Model.Id })" class="btn btn-secondary">Cancel</a>
+    }
+</div>

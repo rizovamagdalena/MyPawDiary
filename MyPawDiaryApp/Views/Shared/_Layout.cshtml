@@ -1,0 +1,103 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - MyPawDiary</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    <link rel="stylesheet" href="~/Content/Site.css" asp-append-version="true" />
+
+    <style>
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background-color: #fff5f7;
+        }
+
+        .navbar {
+            background: linear-gradient(to right, #ffb6c1, #ffe5b4);
+        }
+
+        .navbar-brand {
+            font-weight: bold;
+            font-size: 1.8em;
+            color: #d6336c !important;
+        }
+
+        .nav-link {
+            color: #5a2a3f !important;
+            font-weight: 500;
+        }
+
+            .nav-link:hover {
+                color: #ff6186 !important;
+            }
+
+        .btn-paw {
+            background-color: #ff85a2;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            font-size: 1em;
+            transition: background-color 0.3s ease;
+        }
+
+            .btn-paw:hover {
+                background-color: #ff6186;
+                color: white;
+            }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light shadow-sm mb-4">
+        <div class="container">
+            @Html.ActionLink("MyPawDiary 🐾", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+            <button type="button" class="navbar-toggler" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                    aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse d-sm-inline-flex justify-content-between">
+                <ul class="navbar-nav flex-grow-1">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li class="nav-item">@Html.ActionLink("Feed", "Index", "Feed", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Pets", "Index", "Pets", null, new { @class = "nav-link" })</li>
+                        @*<li class="nav-item">@Html.ActionLink("Activities", "Index", "Activities", null, new { @class = "nav-link" })</li>*@
+                        <li class="nav-item">@Html.ActionLink("Profile", "Details", "Profile", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Friends", "Friends", "Profile", null, new { @class = "nav-link" })</li>
+
+
+                        <li class="nav-item">
+                            @using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <button type="submit" class="btn btn-paw ms-2">Logout</button>
+                            }
+                        </li>
+
+                    }
+                    else
+                    {
+                        <li class="nav-item">@Html.ActionLink("Login", "Login", "Account", null, new { @class = "nav-link" })</li>
+                        <li class="nav-item">@Html.ActionLink("Register", "Register", "Account", null, new { @class = "nav-link btn-paw ms-2" })</li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer class="text-center py-4">
+            <p>&copy; @DateTime.Now.Year - MyPawDiary. Made with ❤️ for pet lovers!</p>
+        </footer>
+    </div>
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>

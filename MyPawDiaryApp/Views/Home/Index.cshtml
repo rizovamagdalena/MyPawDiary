@@ -1,0 +1,66 @@
+﻿@{
+    ViewBag.Title = "Welcome to MyPawDiary";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    body {
+        background-color: #fff5f7; /* soft peach-pink background */
+        font-family: 'Segoe UI', sans-serif;
+    }
+
+    .hero {
+        text-align: center;
+        padding: 40px 20px;
+        background: linear-gradient(to bottom right, #ffb6c1, #ffe5b4); /* pink to peach gradient */
+        border-radius: 0 0 20px 20px;
+    }
+
+        .hero img {
+            max-width: 400px; /* smaller image */
+            width: 100%;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            display: block;
+            margin-left: auto;
+            margin-right: auto; /* centers the image */
+        }
+
+        .hero h1 {
+            font-size: 3em;
+            color: #d6336c;
+            margin-bottom: 10px;
+        }
+
+        .hero p {
+            font-size: 1.2em;
+            color: #5a2a3f;
+            margin-bottom: 20px;
+        }
+
+    .btn-paw {
+        background-color: #ff85a2;
+        color: white;
+        padding: 12px 24px;
+        border-radius: 30px;
+        font-size: 1.1em;
+        text-decoration: none;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-paw:hover {
+            background-color: #ff6186;
+        }
+</style>
+
+<div class="hero">
+    <img src="https://wallpapers.com/images/hd/cute-pets-pictures-k0c4a9npzte6eznj.jpg " alt="Cute pets" />
+    <h1>MyPawDiary 🐾</h1>
+    <p>Your pet’s happiest memories, all in one place!</p>
+    <p>Track daily adventures, health, and milestones — only for members.</p>
+
+    <a href="@Url.Action("Login", "Account")" class="btn-paw">Log In</a>
+    <span style="margin: 0 10px; color:#5a2a3f;">or</span>
+    <a href="@Url.Action("Register", "Account")" class="btn-paw">Sign Up</a>
+</div>

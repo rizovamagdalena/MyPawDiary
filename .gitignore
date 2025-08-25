@@ -1,0 +1,17 @@
+# Visual Studio
+.vs/
+bin/
+obj/
+*.user
+*.suo
+*.cache
+*.log
+*.db
+*.pdb
+
+# Packages
+packages/
+
+# Local database
+App_Data/*.mdf
+App_Data/*.ldf

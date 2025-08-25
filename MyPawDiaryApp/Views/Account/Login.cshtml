@@ -1,0 +1,65 @@
+﻿@using MyPawDiaryApp.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log in";
+}
+<style>
+    .form-control {
+        width: 60%; 
+        margin: 0 auto; 
+    }
+
+    .form-label, .text-danger {
+        display: block;
+        text-align: center;
+    }
+</style>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="card shadow-lg rounded-3">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">🐾 Log in to MyPawDiary</h2>
+                    @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.UserName, new { @class = "form-label fw-bold text-pink" })
+                            @Html.TextBoxFor(m => m.UserName, new { @class = "form-control", placeholder = "Enter your email" })
+                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Password, new { @class = "form-label fw-bold text-pink" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="form-check mb-3">
+                            @Html.CheckBoxFor(m => m.RememberMe, new { @class = "form-check-input" })
+                            @Html.LabelFor(m => m.RememberMe, new { @class = "form-check-label" })
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <input type="submit" value="Log in" class="btn btn-lg rounded-pill btn-pink" />
+                        </div>
+
+                        <div class="text-center">
+                            <p class="mb-1">
+                                Don't have an account?
+                                @Html.ActionLink("Register here", "Register", null, new { @class = "fw-bold text-decoration-none" })
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

@@ -1,0 +1,97 @@
+﻿@model IEnumerable<MyPawDiaryApp.Models.ApplicationUser>
+
+@{
+    ViewBag.Title = "My Friends";
+}
+
+<h2>@ViewBag.Title</h2>
+<form class="d-flex position-relative" onsubmit="return false;">
+    <input id="usersSearchInput" class="form-control me-2" type="search" placeholder="Search users..." autocomplete="off" />
+    <button class="btn btn-outline-light" type="submit">🔍</button>
+
+    <!-- Container for search results -->
+    <div id="searchResults" class="dropdown-menu" style="width: 300px; max-height: 300px; overflow-y: auto;"></div>
+</form>
+
+@if (!Model.Any())
+{
+    <p>You are not following anyone yet.</p>
+}
+else
+{
+    <div class="list-group">
+        @foreach (var friend in Model)
+        {
+            <div class="list-group-item mb-3 shadow-sm">
+                <div class="d-flex align-items-center">
+                    <!-- Profile photo -->
+                    <img src="@(friend.ProfilePhotoPath ?? "Content/images/default-avatar.png")"
+                         alt="@friend.FirstName"
+                         class="rounded-circle me-3"
+                         style="width:60px; height:60px; object-fit:cover;" />
+
+                    <div class="flex-grow-1">
+                        <!-- Username with link to profile/details -->
+                        <h5>
+                            @Html.ActionLink(friend.UserName, "Details", "Profile", new { username = friend.UserName }, null)
+                        </h5>
+
+                        <!-- Pet names -->
+                        @if (friend.Pets != null && friend.Pets.Any())
+                        {
+                            <p class="mb-0 text-muted">
+                                Pets: @string.Join(", ", friend.Pets.Select(p => p.Name))
+                            </p>
+                        }
+                        else
+                        {
+                            <p class="mb-0 text-muted">No pets added.</p>
+                        }
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+}
+
+<script>
+    $(document).ready(function () {
+        const $input = $('#usersSearchInput');
+        const $results = $('#searchResults');
+
+        $input.on('input', function () {
+            const query = $(this).val().trim();
+
+            if (query.length === 0) {
+                $results.empty().removeClass('show');
+                return;
+            }
+
+            $.getJSON('/Profile/SearchUsers', { query: query }, function (data) {
+                $results.empty();
+
+                if (data.length === 0) {
+                    $results.append('<div class="dropdown-item disabled">No users found</div>');
+                } else {
+                    data.forEach(user => {
+                        $results.append(`
+                         <a href="/Profile/Details?username=${user.UserName}" class="dropdown-item d-flex align-items-center">
+                            <img src="${user.ProfilePhotoPath || 'Content/images/default-avatar.png'}"
+                                 style="width:40px; height:40px; object-fit:cover; margin-right:10px; border-radius:50%;" />
+                            <span>${user.FirstName} ${user.LastName} ${user.UserName}</span>
+                        </a>
+                    `);
+                    });
+                }
+
+                $results.addClass('show');
+            });
+        });
+
+        $(document).on('click', function (e) {
+            if (!$(e.target).closest('#userSearchInput, #searchResults').length) {
+                $results.removeClass('show');
+            }
+        });
+    });
+</script>

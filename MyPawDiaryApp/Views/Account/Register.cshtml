@@ -1,0 +1,109 @@
+﻿@using MyPawDiaryApp.Models
+@model RegisterViewModel
+
+@{
+    ViewBag.Title = "Register";
+}
+<style>
+    .form-control {
+        width: 60%; /* adjust as needed */
+        margin: 0 auto; /* center horizontally */
+    }
+
+    .form-label, .text-danger {
+        display: block;
+        text-align: center;
+    }
+</style>
+
+<main class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow-lg rounded-3">
+                <div class="card-body p-4">
+                    <h2 class="text-center mb-4">🐾 Create Your MyPawDiary Account</h2>
+
+                    @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { enctype = "multipart/form-data", role = "form" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <!--<div class="row">-->
+                        @*<div class="col-md-6 mb-3">
+                                @Html.LabelFor(m => m.FirstName, new { @class = "form-label fw-bold text-pink" })
+                                @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter your first name" })
+                                @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                            </div>
+
+                            <div class="col-md-6 mb-3">
+                                @Html.LabelFor(m => m.LastName, new { @class = "form-label fw-bold text-pink" })
+                                @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter your last name" })
+                                @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                            </div>*@
+                        <!--</div>-->
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.FirstName, new { @class = "form-label fw-bold text-pink" })
+                            @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control", placeholder = "Enter your first name" })
+                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+                        </div>
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.LastName, new { @class = "form-label fw-bold text-pink" })
+                            @Html.TextBoxFor(m => m.LastName, new { @class = "form-control", placeholder = "Enter your last name" })
+                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Username, new { @class = "form-label fw-bold text-pink" })
+                            @Html.TextBoxFor(m => m.Username, new { @class = "form-control", placeholder = "Choose a username" })
+                            @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Email, new { @class = "form-label fw-bold text-pink" })
+                            @Html.TextBoxFor(m => m.Email, new { @class = "form-control", placeholder = "Enter your email" })
+                            @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.Password, new { @class = "form-label fw-bold text-pink" })
+                            @Html.PasswordFor(m => m.Password, new { @class = "form-control", placeholder = "Enter your password" })
+                            @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.ConfirmPassword, new { @class = "form-label fw-bold text-pink" })
+                            @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm your password" })
+                            @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.LabelFor(m => m.DateOfBirth, new { @class = "form-label fw-bold text-pink" })
+                            @Html.TextBoxFor(m => m.DateOfBirth, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                            @Html.ValidationMessageFor(m => m.DateOfBirth, "", new { @class = "text-danger" })
+                        </div>
+
+                        <div class="mb-3">
+                            @Html.Label("Profile Photo", new { @class = "form-label fw-bold text-pink" })
+                            <input type="file" name="ProfilePhoto" class="form-control" />
+                        </div>
+
+                        <div class="d-grid mb-3">
+                            <input type="submit" value="Register" class="btn btn-lg rounded-pill btn-pink" />
+                        </div>
+
+                        <div class="text-center">
+                            <p class="mb-1">
+                                Already have an account?
+                                @Html.ActionLink("Log in here", "Login", null, new { @class = "fw-bold text-decoration-none" })
+                            </p>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+}

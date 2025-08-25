@@ -1,0 +1,97 @@
+﻿@model MyPawDiaryApp.Models.Pet
+
+@{
+    ViewBag.Title = "Edit " + Model.Name;
+}
+
+<div class="container mt-4">
+    <h2 class="text-center mb-4">Edit Pet - @Model.Name</h2>
+
+    @using (Html.BeginForm("Edit", "Pets", FormMethod.Post, new { enctype = "multipart/form-data" }))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.Id)
+
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="card shadow-sm p-4">
+                    <h4 class="mb-3">Pet Details</h4>
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger mb-3" })
+
+                    <!-- Name -->
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Species -->
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.Species, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Species, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Species, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Breed -->
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.Breed, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Breed, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Breed, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Date of Birth -->
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.DateOfBirth, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "form-control", type = "date" } })
+                        @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Gender -->
+                    <div class="mb-3">
+                        @Html.LabelFor(model => model.Gender, htmlAttributes: new { @class = "form-label" })
+                        @Html.EditorFor(model => model.Gender, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Gender, "", new { @class = "text-danger" })
+                    </div>
+
+                    <!-- Photo -->
+                    <div class="mb-3">
+                        @Html.Label("Pet Photo", htmlAttributes: new { @class = "form-label" })
+                        <input type="file" name="PetPhoto" class="form-control" />
+
+                        @if (!string.IsNullOrEmpty(Model.Photo))
+                        {
+                            <img src="@Model.Photo" class="img-fluid mt-2 rounded shadow-sm" alt="@Model.Name" style="max-height:200px;" />
+                        }
+                    </div>
+
+                    <div class="d-grid gap-2 mt-4">
+                        <input type="submit" value="Save Changes" class="btn btn-paw btn-lg" />
+                        @Html.ActionLink("Back to My Pets", "Index", null, new { @class = "btn btn-outline-secondary btn-lg" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .btn-paw {
+        background-color: #ff85a2;
+        color: white;
+        border-radius: 30px;
+        transition: background-color 0.3s ease;
+    }
+
+        .btn-paw:hover {
+            background-color: #ff6186;
+            color: white;
+        }
+
+    .card {
+        border-radius: 15px;
+    }
+
+    .form-label {
+        font-weight: 600;
+    }
+</style>

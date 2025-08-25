@@ -1,0 +1,193 @@
+﻿@model MyPawDiaryApp.Models.ApplicationUser
+
+@{
+    ViewBag.Title = Model.FirstName + "'s Profile";
+    bool isFollowing = ViewBag.IsFollowing != null ? (bool)ViewBag.IsFollowing : false;
+    bool isCurrentUser = ViewBag.isCurrentUser != null ? (bool)ViewBag.isCurrentUser : false;
+
+}
+
+<div class="container mt-4">
+    <div class="row">
+        <!-- LEFT COLUMN -->
+        <div class="col-md-6">
+            <div class="card shadow-sm mb-4 p-3">
+                <div class="d-flex align-items-center">
+                    <!-- Profile Picture -->
+                    <div class="me-3">
+                        <img src="@(Model.ProfilePhotoPath ?? "/images/default-avatar.png")"
+                             class="rounded-circle" style="width:120px; height:120px; object-fit:cover;"
+                             alt="@Model.FirstName" />
+                    </div>
+
+                    <!-- Profile Info -->
+                    <div>
+                        <h4 class="fw-bold">@Model.UserName</h4>
+                        <p><strong>First Name:</strong> @Model.FirstName</p>
+                        <p><strong>Last Name:</strong> @Model.LastName</p>
+                        <p><strong>Email:</strong> @Model.Email</p>
+
+                        @if (!isCurrentUser)
+                        {
+                            <div class="mt-2">
+                                @using (Html.BeginForm(isFollowing ? "Unfollow" : "Follow", "Profile", FormMethod.Post))
+                                {
+                                    @Html.AntiForgeryToken()
+                                    <input type="hidden" name="userId" value="@Model.Id" />
+                                    <button type="submit" class="btn btn-@(isFollowing ? "danger" : "success")">
+                                        @(isFollowing ? "Unfollow" : "Follow")
+                                    </button>
+                                }
+                            </div>
+                        }
+
+                        @if (isCurrentUser)
+                        {
+                            <div class="mt-2">
+                                <a href="@Url.Action("EditProfile", "Profile")" class="btn btn-primary">Edit Profile</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <!-- User's Posts -->
+            <div class="card shadow-sm">
+                <div class="card-body" style="max-height:500px; overflow-y:auto;">
+                    <h5 class="fw-bold mb-3">Posts</h5>
+                    @if (Model.Posts == null || !Model.Posts.Any())
+                    {
+                        <p class="text-muted">No posts yet.</p>
+                    }
+                    else
+                    {
+                        <div class="row">
+                            @foreach (var post in Model.Posts.OrderByDescending(p => p.CreatedAt))
+                            {
+                                <div class="col-md-12 mb-3">
+                                    <div class="card shadow-sm">
+                                        @if (!string.IsNullOrEmpty(post.PicturePath))
+                                        {
+                                            <img src="@post.PicturePath" class="card-img-top" style="max-height:200px; object-fit:cover;" />
+                                        }
+                                        <div class="card-body">
+                                            <p>@post.Caption</p>
+                                            <small class="text-muted">Posted on @post.CreatedAt.ToString("dd MMM yyyy")</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT COLUMN (Pets) -->
+        <div class="col-md-6">
+            <div class="card shadow-sm p-3">
+                <h5 class="fw-bold mb-3">Pets</h5>
+                @if (Model.Pets == null || !Model.Pets.Any())
+                {
+                    <p class="text-muted">No pets added.</p>
+                }
+                else
+                {
+                    <div class="row">
+                        @foreach (var pet in Model.Pets)
+                        {
+                            <div class="col-md-6 mb-3">
+                                <div class="card h-100 shadow-sm text-center">
+                                    <img src="@(pet.Photo ?? "/images/default-pet.png")"
+                                         class="card-img-top" style="height:150px; object-fit:cover;" />
+                                    <div class="card-body">
+                                        @if (isCurrentUser)
+                                        {
+                                            <h6>
+                                                <a href="@Url.Action("Details", "Pets", new { id = pet.Id })"
+                                                   class="text-decoration-none fw-bold">
+                                                    @pet.Name
+                                                </a>
+                                            </h6>
+                                        }
+                                        else
+                                        {
+                                            <h6 class="fw-bold">@pet.Name</h6>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--<div class="container mt-4">
+    <div class="row">
+        <div class="col-md-4">-->
+            <!-- Profile Info -->
+            <!--<div class="card shadow-sm">
+                <img src="@(Model.ProfilePhotoPath ?? "/images/default-avatar.png")"
+                     class="card-img-top" alt="@Model.FirstName" />
+                <div class="card-body">
+                    <h4 class="card-title">@Model.FirstName</h4>
+                    <p class="card-text">Email: @Model.Email</p>
+                    <p class="card-text">
+                        Pets: @(Model.Pets != null && Model.Pets.Any() ? string.Join(", ", Model.Pets.Select(p => p.Name)) : "No pets added")
+                    </p>
+                    @if (!isCurrentUser)
+                    {
+                        <div class="mt-2">
+                            @using (Html.BeginForm(isFollowing ? "Unfollow" : "Follow", "Profile", FormMethod.Post))
+                            {
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="userId" value="@Model.Id" />
+                                <button type="submit" class="btn btn-@(isFollowing ? "danger" : "success")">
+                                    @(isFollowing ? "Unfollow" : "Follow")
+                                </button>
+                            }
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+        @if (isCurrentUser)
+        {
+            <div class="mt-2">
+                <a href="@Url.Action("EditProfile", "Profile")" class="btn btn-primary">Edit Profile</a>
+            </div>
+        }
+
+        <div class="col-md-8">-->
+            <!-- User's Posts -->
+            <!--<h3>Posts</h3>
+            @if (Model.Posts == null || !Model.Posts.Any())
+            {
+                <p class="text-muted">No posts yet.</p>
+            }
+            else
+            {
+                <div class="row">
+                    @foreach (var post in Model.Posts.OrderByDescending(p => p.CreatedAt))
+                    {
+                        <div class="col-md-6 mb-4">
+                            <div class="card shadow-sm">
+                                @if (!string.IsNullOrEmpty(post.PicturePath))
+                                {
+                                    <img src="@post.PicturePath" class="card-img-top" />
+                                }
+                                <div class="card-body">
+                                    <p>@post.Caption</p>
+                                    <small class="text-muted">Posted on @post.CreatedAt.ToString("dd MMM yyyy")</small>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            }
+        </div>
+    </div>
+</div>-->
